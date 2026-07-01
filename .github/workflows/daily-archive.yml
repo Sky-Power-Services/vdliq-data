@@ -14,11 +14,10 @@
 name: daily-archive
 
 on:
-  schedule:
-    # 00:30 UTC — publish the just-closed UTC day within the hour. VDL2 chunks flush
-    # every 5 min so 30 min margin is ample. NOTE: GitHub Actions crons drift (often
-    # 10 min–3 h late on free tier), so this is best-effort timing, not guaranteed.
-    - cron: "30 0 * * *"
+  # SCHEDULE DISABLED 2026-07-01: VDL2/ACARS now builds IN-REGION on the nightly
+  # adsbiq archive spot box (the SAME box as ADS-B) — reads the datalink lake free
+  # (no egress) and publishes on the precise 00:30 UTC systemd timer. This
+  # workflow_dispatch is kept ONLY as a manual fallback / re-archive path.
   workflow_dispatch:
     inputs:
       date:
