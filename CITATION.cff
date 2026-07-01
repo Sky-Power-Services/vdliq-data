@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+title: "vdliq open VDL2/ACARS message data"
+type: dataset
+abstract: "Free daily open exports of decoded VDL2/ACARS/HFDL datalink messages from the vdliq community feeder network."
+authors:
+  - name: "vdliq feeder network"
+url: "https://vdliq.com/data"
+repository-code: "https://github.com/Sky-Power-Services/vdliq-data"
+license: "ODbL-1.0"
+keywords:
+  - VDL2
+  - ACARS
+  - HFDL
+  - datalink
+  - aviation
+  - open data
