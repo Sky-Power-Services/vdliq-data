@@ -15,8 +15,10 @@ name: daily-archive
 
 on:
   schedule:
-    # 06:20 UTC — after the previous UTC day's chunks have fully landed.
-    - cron: "20 6 * * *"
+    # 00:30 UTC — publish the just-closed UTC day within the hour. VDL2 chunks flush
+    # every 5 min so 30 min margin is ample. NOTE: GitHub Actions crons drift (often
+    # 10 min–3 h late on free tier), so this is best-effort timing, not guaranteed.
+    - cron: "30 0 * * *"
   workflow_dispatch:
     inputs:
       date:
