@@ -74,8 +74,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           D="${{ steps.date.outputs.date }}"
-          TITLE="vdliq VDL2/ACARS messages — $D"
-          NOTES="Daily decoded VDL2/ACARS messages for $D (${{ steps.build.outputs.rows }} messages). zstd Parquet. ODbL-1.0. See README for schema."
+          TITLE="vdliq public non-specialty messages — $D"
+          NOTES="Public-safe position, weather, OOOI, and ATS/operational messages for $D (${{ steps.build.outputs.rows }} messages). Engine/APU/ACMS/maintenance and feeder metadata are excluded. zstd Parquet. ODbL-1.0."
           if gh release view "$D" >/dev/null 2>&1; then
             gh release upload "$D" "${{ steps.build.outputs.parquet }}" "${{ steps.build.outputs.manifest }}" --clobber
             gh release edit "$D" --title "$TITLE" --notes "$NOTES"

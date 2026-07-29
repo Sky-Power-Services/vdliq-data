@@ -1,33 +1,37 @@
 # vdliq history — daily VDL2/ACARS message data
 
-Free, open daily exports of decoded **VDL2/ACARS** messages received by the
-[vdliq](https://vdliq.com) feeder network. One [Release](../../releases) per UTC
-**month**, holding one Parquet file per day, generated automatically. Inspired by
-[adsb.lol](https://github.com/adsblol)'s open-data drops.
+Free, open daily exports of **non-specialty VDL2/ACARS application messages**
+received by the [vdliq](https://vdliq.com) feeder network. One
+[Release](../../releases) per UTC **month** holds one Parquet file per day.
+
+The public derivative contains recognized position, weather, OOOI, and
+ATS/operational messages. Private collection is separate and is not represented
+by this reduced public dataset.
 
 ## What's in each release
 Each monthly release (tag `YYYY-MM`) holds one file per UTC day:
 
 | Asset | Description |
 |---|---|
-| `vdl2_messages_<date>.parquet` | That day's decoded VDL2/ACARS messages (zstd Parquet) |
+| `vdl2_messages_<date>.parquet` | That day's public-safe non-specialty messages (zstd Parquet) |
 
 Per-day **row counts and SHA-256 checksums** are listed in the release notes.
 Download a specific day at
 `.../releases/download/<YYYY-MM>/vdl2_messages_<date>.parquet`.
 
 ## Data model
-One row per decoded message. The stable top-level fields are native columns; the
-full decoder output (`raw`) and the receiving `station` are kept as JSON-string
-columns so nothing is lost even as message types vary.
+One row per public-safe decoded application message. Empty/link-only frames,
+engine/APU/ACMS/maintenance content, full raw decoder objects, station/feeder
+identity, RF measurements, and source UUIDs are intentionally excluded.
 
 ### Key columns
 `timestamp` (UTC), `icaoHex`, `fromHex`, `toHex`, `tail`, `flightNumber`,
-`label` (ACARS label, e.g. `5Z`, `15`), `frequency`, `mode`, `source`,
-`sourceType`, `text`, plus `station` and `raw` as JSON strings.
+`label` (ACARS label), `mode`, `sourceType`, `text`, `public_category`, and
+`policy_version`.
 
-> Only a subset of messages carry a position. Filter on the relevant labels /
-> presence of lat-lon in `raw` if you need positions specifically.
+`public_category` is one of `position`, `weather`, `oooi`, or
+`ats_operational`. The publication policy fails closed: unclassified content is
+not included.
 
 ## Loading
 ```python
